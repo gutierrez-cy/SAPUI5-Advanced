@@ -64,6 +64,14 @@ sap.ui.define([
             var oModel = this.getView().getModel();
             oModel.setProperty("/EmployeeId", "");
             oModel.setProperty("/CountryKey", "");
+        };
+
+        function showPostalCode(oEvent) {
+            var itemPressed = oEvent.getSource(); //ver cual es el item que se ha pulsado
+            var oContext = itemPressed.getBindingContext(); //en base al item pulsado, se obtiene el contexto
+            var objectContext = oContext.getObject(); //objeto que tenemos sobre el contexto, elemento que se quiere mostrar
+
+            sap.m.MessageToast.show(objectContext.PostalCode);
         }
 
         var Main = Controller.extend("logaligroup.employees.controller.MainView", {});
@@ -86,6 +94,6 @@ sap.ui.define([
         Main.prototype.onInit = onInit;
         Main.prototype.onFilter = onFilter;
         Main.prototype.onClearFilter = onClearFilter;
-
+        Main.prototype.showPostalCode =showPostalCode;
         return Main;
     });
