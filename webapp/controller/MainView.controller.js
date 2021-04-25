@@ -1,13 +1,74 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller"
+    "sap/ui/core/mvc/Controller",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
 ],
 	/**
 	 * @param {typeof sap.ui.core.mvc.Controller} Controller
+     * @param {typeof sap.ui.model.Filter} Filter
+     * @param {typeof sap.ui.model.FilterOperator} FilterOperator
 	 */
-    function (Controller) {
+    function (Controller, Filter, FilterOperator) {
         "use strict";
         //ZONA PRIVADA
-        function myCheck() {
+
+        function onInit() {
+            var oJSONModel = new sap.ui.model.json.JSONModel();
+            var oView = this.getView();
+            var i18nBundle = oView.getModel("i18n").getResourceBundle(); //se recupera los recursos del modelo i18n del manifest.json
+
+            //Construccion modelo Json
+            //  var oJSON = {
+            //      employeeId: "12345",
+            //      countryKey: "UK",
+            //      listCountry: [
+            //          {
+            //              key: "US",
+            //              text: i18nBundle.getText("countryUS")
+            //          },
+            //          {
+            //              key: "UK",
+            //              text: i18nBundle.getText("countryUK")
+            //          },
+            //          {
+            //              key: "ES",
+            //              text: i18nBundle.getText("countryES")
+            //          }
+            //      ]
+            //  };
+            //oJSONModel.setData(oJSON);
+            oJSONModel.loadData("./localService/mockdata/Employees.json", false); //carga de los datos desde la carpeta 
+            //    oJSONModel.attachRequestCompleted(function(oEventModel) {
+            //         //ver si los datos han cargado
+            //         console.log(JSON.stringify(oJSONModel.getData()));
+            //    }); 
+            oView.setModel(oJSONModel);
+        };
+
+        function onFilter() {
+            var oJSON = this.getView().getModel().getData(); //Obtener los datos del modelo
+            var filters = [];
+            if (oJSON.EmployeeId !== "") {
+                filters.push(new Filter("EmployeeID", FilterOperator.EQ, oJSON.EmployeeId));
+            }
+            if (oJSON.CountryKey !== "") {
+                filters.push(new Filter("Country", FilterOperator.EQ, oJSON.CountryKey));
+            }
+
+            var oList = this.getView().byId("tableEmployee"); //obtener listado de la tabla para que se actulice
+            var oBinding = oList.getBinding("items"); //se le pasa los items de la tabla
+            oBinding.filter(filters);
+        };
+
+        function onClearFilter(){
+            var oModel = this.getView().getModel();
+            oModel.setProperty("/EmployeeId", "");
+            oModel.setProperty("/CountryKey", "");
+        }
+
+        var Main = Controller.extend("logaligroup.employees.controller.MainView", {});
+
+        Main.prototype.onValidate = function () {
             var inputEmployee = this.byId("inputEmployee"); //Se recupera todas las proiedades del input
             var valueEmployee = inputEmployee.getValue(); //Se recupera el valor del input
 
@@ -19,14 +80,12 @@ sap.ui.define([
                 //inputEmployee.setDescription("Not Ok");
                 this.byId("labelCountry").setVisible(false);
                 this.byId("slCountry").setVisible(false);
-            };
-        }
+            }
+        };
 
-        return Controller.extend("logaligroup.employees.controller.MainView", {
-            onInit: function () {
+        Main.prototype.onInit = onInit;
+        Main.prototype.onFilter = onFilter;
+        Main.prototype.onClearFilter = onClearFilter;
 
-            },
-
-            onValidate: myCheck //funcion declarada en ka zona privada
-        });
+        return Main;
     });
