@@ -1,0 +1,45 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run employee_v2",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/@sap/html5-repo-mock/index.js",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PORT": "6004",
+        "MOCK_LOOKUP_DIRS": "[\"webapp\"]",
+        "run.config": "{\"handlerId\":\"ui5_flat_run_config_handler_id\",\"runnableId\":\"/home/user/projects/employee_v2\"}"
+      },
+      "args": [
+        "--standalone",
+        "/logaligroupemployees/index.html",
+        "--ui5",
+        "{\"version\":\".\"}"
+      ],
+      "envFile": "${workspaceFolder}/.env1",
+      "preLaunchTask": "Build employee_v2"
+    },
+    {
+      "name": "Run employee",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/@sap/html5-repo-mock/index.js",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PORT": "6004",
+        "MOCK_LOOKUP_DIRS": "[\"webapp\"]",
+        "run.config": "{\"handlerId\":\"ui5_flat_run_config_handler_id\",\"runnableId\":\"/home/user/projects/employee_v2\"}"
+      },
+      "args": [
+        "--standalone",
+        "/logaligroupemployees/index.html",
+        "--ui5",
+        "{\"version\":\".\"}"
+      ],
+      "envFile": "${workspaceFolder}/.env1",
+      "preLaunchTask": "Build employee_v2"
+    }
+  ]
+}
