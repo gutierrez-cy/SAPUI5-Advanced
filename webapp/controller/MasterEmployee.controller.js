@@ -83,24 +83,32 @@ sap.ui.define([
         function showEmployee(oEvent){
             var path = oEvent.getSource().getBindingContext("odataNorthwind").getPath();
             this._bus.publish("flexible", "showEmployee", path);
+        };
+
+        function toOrderDetails(oEvent) {
+            var orderID = oEvent.getSource().getBindingContext("odataNorthwind").getObject().OrderID; //identificadro sobre el pedido orderID
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("RouteOrderDetails", { //se le pasa el orderid a al enrutamiento creado en el manifest
+                OrderID: orderID
+            });
         }
 
         var Main = Controller.extend("logaligroup.employees.controller.MasterEmployee", {});
 
-        Main.prototype.onValidate = function () {
-            var inputEmployee = this.byId("inputEmployee"); //Se recupera todas las proiedades del input
-            var valueEmployee = inputEmployee.getValue(); //Se recupera el valor del input
+       // Main.prototype.onValidate = function () {
+       //     var inputEmployee = this.byId("inputEmployee"); //Se recupera todas las proiedades del input
+       //     var valueEmployee = inputEmployee.getValue(); //Se recupera el valor del input
 
-            if (valueEmployee.length === 6) {
-                //inputEmployee.setDescription("Ok");
-                this.byId("labelCountry").setVisible(true);
-                this.byId("slCountry").setVisible(true);
-            } else {
-                //inputEmployee.setDescription("Not Ok");
-                this.byId("labelCountry").setVisible(false);
-                this.byId("slCountry").setVisible(false);
-            }
-        };
+       //     if (valueEmployee.length === 6) {
+       //         //inputEmployee.setDescription("Ok");
+       //         this.byId("labelCountry").setVisible(true);
+       //         this.byId("slCountry").setVisible(true);
+       //     } else {
+       //         //inputEmployee.setDescription("Not Ok");
+       //         this.byId("labelCountry").setVisible(false);
+       //         this.byId("slCountry").setVisible(false);
+       //     }
+       // };
 
         Main.prototype.onInit = onInit;
         Main.prototype.onFilter = onFilter;
@@ -111,5 +119,6 @@ sap.ui.define([
         Main.prototype.showOrders = showOrders;
         Main.prototype.onCloseOrders = onCloseOrders;
         Main.prototype.showEmployee = showEmployee;
+        Main.prototype.toOrderDetails = toOrderDetails;
         return Main;
     });

@@ -41,7 +41,7 @@ sap.ui.define([
                             EmployeeId: contextObj.EmployeeId
                         });
                     }
-                    
+
                 }.bind(this)
             });
         };
@@ -116,6 +116,14 @@ sap.ui.define([
 
             contextObj.TypeX = true;
             context.getModel().refresh();
+        };
+
+        function toOrderDetails(oEvent) {
+            var orderID = oEvent.getSource().getBindingContext("odataNorthwind").getObject().OrderID; //identificadro sobre el pedido orderID
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("RouteOrderDetails", { //se le pasa el orderid al enrutamiento creado en el manifest
+                OrderID: orderID
+            });
         }
 
         var Main = Controller.extend("logaligroup.employees.controller.EmployeeDetails", {});
@@ -128,5 +136,6 @@ sap.ui.define([
         Main.prototype.updateIncidenceCreationDate = updateIncidenceCreationDate;
         Main.prototype.updateIncidenceReason = updateIncidenceReason;
         Main.prototype.updateIncidenceType = updateIncidenceType;
+        Main.prototype.toOrderDetails = toOrderDetails;
         return Main;
     });
