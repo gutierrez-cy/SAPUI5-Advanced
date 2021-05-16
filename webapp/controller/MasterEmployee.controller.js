@@ -1,5 +1,5 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
+    "logaligroup/employees/controller/Base.controller",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
 ],
@@ -8,7 +8,7 @@ sap.ui.define([
      * @param {typeof sap.ui.model.Filter} Filter
      * @param {typeof sap.ui.model.FilterOperator} FilterOperator
 	 */
-    function (Controller, Filter, FilterOperator) {
+    function (Base, Filter, FilterOperator) {
         "use strict";
         //ZONA PRIVADA
 
@@ -85,15 +85,8 @@ sap.ui.define([
             this._bus.publish("flexible", "showEmployee", path);
         };
 
-        function toOrderDetails(oEvent) {
-            var orderID = oEvent.getSource().getBindingContext("odataNorthwind").getObject().OrderID; //identificadro sobre el pedido orderID
-            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.navTo("RouteOrderDetails", { //se le pasa el orderid a al enrutamiento creado en el manifest
-                OrderID: orderID
-            });
-        }
 
-        var Main = Controller.extend("logaligroup.employees.controller.MasterEmployee", {});
+        var Main = Base.extend("logaligroup.employees.controller.MasterEmployee", {});
 
        // Main.prototype.onValidate = function () {
        //     var inputEmployee = this.byId("inputEmployee"); //Se recupera todas las proiedades del input
@@ -119,6 +112,5 @@ sap.ui.define([
         Main.prototype.showOrders = showOrders;
         Main.prototype.onCloseOrders = onCloseOrders;
         Main.prototype.showEmployee = showEmployee;
-        Main.prototype.toOrderDetails = toOrderDetails;
         return Main;
     });
