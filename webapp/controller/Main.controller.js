@@ -129,6 +129,7 @@ sap.ui.define([
                 };
             },
 
+            
             onReadOdataIncidence: function (employeeID) {
                 this.getView().getModel("incidenceModel").read("/IncidentsSet", {
                     filters: [
