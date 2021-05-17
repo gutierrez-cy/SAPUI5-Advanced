@@ -45,6 +45,10 @@ sap.ui.define([
             var canvas = document.querySelector("canvas");
             try {
                 this.signaturePad = new SignaturePad(canvas);//etiqueta con la libreria
+                this.signaturePad.fill = false;
+                canvas.addEventListener("mousedown", function () {
+                    this.signaturePad.fill = true;//¿hay firma?
+                }.bind(this));
             } catch (e) {
                 console.error(e);
             }
@@ -52,6 +56,19 @@ sap.ui.define([
 
         clear: function () {
             this.signaturePad.clear();
+            this.signaturePad.fill = false;
+        },
+
+        isFill: function () {
+            return this.signaturePad.fill;//¿tenemos firma?
+        },
+
+        getSignature: function () {
+            return this.signaturePad.toDataURL();//obtener imagen de la firma 
+        },
+
+        setSignature: function (signature) {
+            this.signaturePad.fromDataURL(signature);//mostrar firma guardada en backend
         }
 
     });
